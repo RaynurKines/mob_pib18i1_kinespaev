@@ -15,6 +15,7 @@ public class Shop{
         products.add(new Product("Bread", 25));
         products.add(new Product("Butter", 40));
         products.add(new Product("Milk", 70));
+        products.add(new Product("Cookie", 100));
         this.customers = new ArrayList<>();
         customers.add(new Customer("Danil", "Male", 150));
         customers.add(new Customer("Tanya", "Female", 300));
@@ -54,21 +55,7 @@ public class Shop{
 
 
 
-    public void writeInTxtProducts(){
 
-        try(FileWriter writer = new FileWriter("Products.txt")) {
-            for (Product product : products) {
-                String name = product.getName();
-                String price = String.valueOf(product.getPrice());
-                writer.write(name + " " + price + System.getProperty("line.separator"));
-
-            }
-        }
-        catch(IOException ex){
-
-            System.out.println(ex.getMessage());
-        }
-    }
 
     public void writeInTxtPurchases() {
 
@@ -84,20 +71,6 @@ public class Shop{
             System.out.println(ex.getMessage());
         }
     }
-    public void writeInTxtCustomers() {
 
-        try (FileWriter writer3 = new FileWriter("Customers.txt")) {
-            for (Customer customer : customers) {
-                String name = customer.getName();
-                String sex = customer.getSex();
-                String money = String.valueOf(customer.getMoney());
-                writer3.write(name + " " + sex + " " + money + System.getProperty("line.separator"));
-
-            }
-        } catch (IOException ex) {
-
-            System.out.println(ex.getMessage());
-        }
-    }
 
 }

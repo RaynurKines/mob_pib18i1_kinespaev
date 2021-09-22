@@ -1,3 +1,3 @@
-Danil Male 500.0
-Tanya Female 2417.0
+Danil Male 350.0
+Tanya Female 695.0
 Dmitriy Male 100.0
