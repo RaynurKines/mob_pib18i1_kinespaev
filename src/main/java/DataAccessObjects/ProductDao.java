@@ -1,9 +1,7 @@
 package DataAccessObjects;
 
 import db.HibernateUtil;
-import model.Customer;
 import model.Product;
-import model.Shop;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

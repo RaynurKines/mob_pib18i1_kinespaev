@@ -28,12 +28,16 @@ public class Main {
 
         Shop shop = new Shop(products, customers, purchases);
         shop.createPurchase(shop.getCustomers().get(1), shop.getProducts());
+        shop.createPurchase(shop.getCustomers().get(0), shop.getProducts());
         cuDao.writeInDB(transaction, shop.getCustomers());
         prDao.writeInDB(transaction,shop.getProducts());
         puDao.writeInDB(transaction,shop.getPurchases());
         cuDao.readFromDB(transaction);
         prDao.readFromDB(transaction);
+        //Не показываются продукты, если в toString() вписать customer, то будет вылетать с ошибкой "customer is null"
         puDao.readFromDB(transaction);
+
+
 
         /*System.out.println(shop.getCustomers().get(0));
         System.out.println(shop.getCustomers().get(1));

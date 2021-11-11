@@ -2,12 +2,9 @@ package DataAccessObjects;
 
 import db.HibernateUtil;
 import model.Customer;
-import model.Shop;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDao extends ObjectDao {
@@ -30,7 +27,7 @@ public class CustomerDao extends ObjectDao {
     public void readFromDB(Transaction transaction) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List <Customer> customers = session.createQuery("from Customer", Customer.class).list();
-            customers.forEach(c -> System.out.println(c.getName()));
+            customers.forEach(System.out::println);
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

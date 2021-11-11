@@ -79,6 +79,6 @@ public class Purchase {
         }
         return "id " + getId() +
                 ", price " + getFinalPrice() +
-                "', autos =[" + strProducts + "]}";
+                "', products =[" + strProducts + "]}";
     }
 }
