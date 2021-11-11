@@ -8,7 +8,6 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
     @Column(name = "name")
@@ -26,7 +25,19 @@ public class Customer {
     @Column(name = "score")
     public int score = 0;
 
-    public Customer(){
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "purchase_id")
+    private Purchase purchase;
+
+    public Purchase getPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
+    }
+
+    public Customer() {
 
     }
 
@@ -64,8 +75,19 @@ public class Customer {
         this.sex = sex;
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
-        return name + " : " + money;
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sex='" + sex + '\'' +
+                ", money=" + money +
+                ", regular=" + regular +
+                ", score=" + score +
+                '}';
     }
 }

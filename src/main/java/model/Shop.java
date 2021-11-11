@@ -6,25 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Shop{
-    private final List<Product> products;
-    private final List<Customer> customers;
-    private final List<Buy> purchases = new ArrayList<>();
+    private List<Product> products;
+    private List<Customer> customers;
+    private List<Purchase> purchases;
     private Sale sale = Sale.WITHOUT;
 
     public Shop() {
-        this.products = new ArrayList<>();
-        products.add(new Product("Bread", 25));
-        products.add(new Product( "Butter", 40));
-        products.add(new Product( "Milk", 70));
-        products.add(new Product( "Cookie", 100));
-        this.customers = new ArrayList<>();
-        customers.add(new Customer("Danil", "Male", 150));
-        customers.add(new Customer("Tanya", "Female", 300));
-        customers.add(new Customer("Dmitriy", "Male", 100));
     }
-    public Shop(List<Product> products, List<Customer> customers){
+    public Shop(List<Product> products, List<Customer> customers, List<Purchase> purchases){
         this.products=products;
         this.customers=customers;
+        this.purchases=purchases;
     }
 
     public List<Customer> getCustomers() { return customers; }
@@ -33,7 +25,7 @@ public class Shop{
         return products;
     }
 
-    public List<Buy> getPurchases() {
+    public List<Purchase> getPurchases() {
         return purchases;
     }
 
@@ -45,32 +37,17 @@ public class Shop{
         this.sale = sale;
     }
 
-    public Buy createBuy(Customer c, Product p) {
-        if (c.score == 10)
-            c.setRegular(true);
-        Buy buy = new Buy(c, p, sale);
-        purchases.add(buy);
-        c.score += 1;
-        return buy;
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
     }
 
-
-
-
-
-    public void writeInTxtPurchases() {
-
-        try (FileWriter writer2 = new FileWriter("src/main/resources/Purchases.txt")) {
-            for (Buy buy : purchases) {
-                String customer = buy.getCustomer().getName();
-                String product = buy.getProduct().getName();
-                String price = String.valueOf(buy.getFinalPrice());
-                writer2.write(customer + " " + product + " " + price + System.getProperty("line.separator"));
-            }
-        } catch (IOException ex) {
-
-            System.out.println(ex.getMessage());
-        }
+    public Purchase createPurchase(Customer c, List<Product> p) {
+        if (c.score == 10)
+            c.setRegular(true);
+        Purchase purchase = new Purchase(c, p, sale);
+        purchases.add(purchase);
+        c.score += 1;
+        return purchase;
     }
 
 

@@ -10,13 +10,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerDao {
+public class CustomerDao extends ObjectDao {
     public void writeInDB(Transaction transaction, List<Customer> customers) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
             transaction = session.beginTransaction();
             // save the student objects
-            customers.forEach(c -> session.save(c));
+            customers.forEach(session::save);
             // commit transaction
             transaction.commit();
         } catch (Exception e) {

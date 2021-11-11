@@ -3,19 +3,19 @@ package DataAccessObjects;
 import db.HibernateUtil;
 import model.Customer;
 import model.Product;
-import model.Shop;
+import model.Purchase;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class ProductDao extends ObjectDao {
-    public void writeInDB(Transaction transaction, List<Product> products) {
+public class PurchaseDao extends ObjectDao {
+    public void writeInDB(Transaction transaction, List<Purchase> purchases) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start a transaction
             transaction = session.beginTransaction();
             // save the student objects
-            products.forEach(session::save);
+            purchases.forEach(session::save);
             // commit transaction
             transaction.commit();
         } catch (Exception e) {
@@ -28,8 +28,8 @@ public class ProductDao extends ObjectDao {
 
     public void readFromDB(Transaction transaction) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List <Product> products = session.createQuery("from Product", Product.class).list();
-            products.forEach(p -> System.out.println(p.getName()));
+            List <Purchase> purchases = session.createQuery("from Purchase", Purchase.class).list();
+            purchases.forEach(System.out::println);
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();

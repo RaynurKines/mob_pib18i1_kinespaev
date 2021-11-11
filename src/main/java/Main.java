@@ -1,12 +1,11 @@
 import DataAccessObjects.CustomerDao;
 import DataAccessObjects.ProductDao;
+import DataAccessObjects.PurchaseDao;
 import model.*;
 import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.stream.Collectors.averagingDouble;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,15 +14,26 @@ public class Main {
 
         ProductDao prDao = new ProductDao();
         CustomerDao cuDao = new CustomerDao();
+        PurchaseDao puDao = new PurchaseDao();
 
-        List<Product> products = prDao.readFromTxtProducts();
+        List<Product> products = new ArrayList<>();
         List<Customer> customers = new ArrayList<>();
+        List<Purchase> purchases = new ArrayList<>();
+
         customers.add(new Customer("Ваня", "male", 1000));
         customers.add(new Customer("Петя", "male", 500));
-        Shop shop = new Shop(products, customers);
+        products.add(new Product("bread", 40));
+        products.add(new Product("butter", 30));
+        products.add(new Product("milk", 50));
 
+        Shop shop = new Shop(products, customers, purchases);
+        shop.createPurchase(shop.getCustomers().get(1), shop.getProducts());
         cuDao.writeInDB(transaction, shop.getCustomers());
+        prDao.writeInDB(transaction,shop.getProducts());
+        puDao.writeInDB(transaction,shop.getPurchases());
         cuDao.readFromDB(transaction);
+        prDao.readFromDB(transaction);
+        puDao.readFromDB(transaction);
 
         /*System.out.println(shop.getCustomers().get(0));
         System.out.println(shop.getCustomers().get(1));
@@ -59,13 +69,13 @@ public class Main {
                 .forEach(System.out::println);*/
     }
 
-    private static void buy(Customer c, Product p, Shop shop) {
-        System.out.println(shop.createBuy(c, p) + ". Remainder " + c.getMoney());
+    private static void buy(Customer c, List<Product> p, Shop shop) {
+        System.out.println(shop.createPurchase(c, p) + ". Remainder " + c.getMoney());
     }
 
     public static void watchPurchases(Shop shop) {
         System.out.println("\nPurchases:");
-        for (Buy buy : shop.getPurchases()) {
+        for (Purchase buy : shop.getPurchases()) {
             System.out.println(buy);
         }
     }
