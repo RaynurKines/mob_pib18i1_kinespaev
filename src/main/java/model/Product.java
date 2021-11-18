@@ -1,7 +1,6 @@
 package model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -17,10 +16,10 @@ public class Product {
 
     @Column(name = "price")
     private double price;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "purchase_id")
-    private Purchase purchase;
+//
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "purchase_id")
+//    private Purchase purchase;
 
     public Product() {
         super();
@@ -47,16 +46,16 @@ public class Product {
         return price;
     }
 
-    public Purchase getPurchase() {
-        return purchase;
-    }
-
-    public void setPurchase(Purchase purchase) {
-        this.purchase = purchase;
-    }
+//    public Purchase getPurchase() {
+//        return purchase;
+//    }
+//
+//    public void setPurchase(Purchase purchase) {
+//        this.purchase = purchase;
+//    }
 
     @Override
     public String toString() {
-        return "Product [id=" + id + ", name=" + name + ", price=" + price + "]";
+        return " Product {id=" + id + ", name=" + name + ", price=" + price + "}";
     }
 }

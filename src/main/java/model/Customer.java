@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -27,15 +28,7 @@ public class Customer {
 
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "purchase_id")
-    private Purchase purchase;
-
-    public Purchase getPurchase() {
-        return purchase;
-    }
-
-    public void setPurchase(Purchase purchase) {
-        this.purchase = purchase;
-    }
+    private List<Purchase> purchase;
 
     public Customer() {
 
@@ -79,9 +72,17 @@ public class Customer {
         return id;
     }
 
+    public List<Purchase> getPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(List<Purchase> purchase) {
+        this.purchase = purchase;
+    }
+
     @Override
     public String toString() {
-        return "Customer{" +
+        return "Customer {" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", sex='" + sex + '\'' +

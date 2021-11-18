@@ -1,5 +1,10 @@
 package model;
 
+import dao.PurchaseDao;
+import db.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,14 +46,25 @@ public class Shop{
         this.purchases = purchases;
     }
 
-    public Purchase createPurchase(Customer c, List<Product> p) {
-        if (c.score == 10)
-            c.setRegular(true);
-        Purchase purchase = new Purchase(c, p, sale);
+    public Purchase createPurchase(Customer customer, List<Product> products){
+        if (customer.score == 10)
+            customer.setRegular(true);
+        Purchase purchase = new Purchase(customer, products, sale);
         purchases.add(purchase);
-        c.score += 1;
+        customer.score += 1;
+        update(customer);
+        products.forEach(p ->update(p));
+
+        PurchaseDao puDao = new PurchaseDao();
+        puDao.writeInDB(purchase);
         return purchase;
     }
 
-
+    public void update(Object object) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.update(object);
+        tx1.commit();
+        session.close();
+    }
 }

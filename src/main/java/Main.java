@@ -1,16 +1,13 @@
-import DataAccessObjects.CustomerDao;
-import DataAccessObjects.ProductDao;
-import DataAccessObjects.PurchaseDao;
+import dao.CustomerDao;
+import dao.ProductDao;
+import dao.PurchaseDao;
 import model.*;
-import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-
-        Transaction transaction = null;
 
         ProductDao prDao = new ProductDao();
         CustomerDao cuDao = new CustomerDao();
@@ -22,21 +19,41 @@ public class Main {
 
         customers.add(new Customer("Ваня", "male", 1000));
         customers.add(new Customer("Петя", "male", 500));
+        customers.add(new Customer("Алина", "female", 500));
+        customers.add(new Customer("Екатерина", "female", 500));
         products.add(new Product("bread", 40));
         products.add(new Product("butter", 30));
         products.add(new Product("milk", 50));
+        products.add(new Product("coffee", 80));
 
         Shop shop = new Shop(products, customers, purchases);
-        shop.createPurchase(shop.getCustomers().get(1), shop.getProducts());
-        shop.createPurchase(shop.getCustomers().get(0), shop.getProducts());
-        cuDao.writeInDB(transaction, shop.getCustomers());
-        prDao.writeInDB(transaction,shop.getProducts());
-        puDao.writeInDB(transaction,shop.getPurchases());
-        cuDao.readFromDB(transaction);
-        prDao.readFromDB(transaction);
-        //Не показываются продукты, если в toString() вписать customer, то будет вылетать с ошибкой "customer is null"
-        puDao.readFromDB(transaction);
 
+        List<Product> productSet1 = new ArrayList<Product>();
+        productSet1.add(shop.getProducts().get(0));
+        productSet1.add(shop.getProducts().get(3));
+        List<Product> productSet2 = new ArrayList<Product>();
+        productSet2.add(shop.getProducts().get(2));
+        productSet2.add(shop.getProducts().get(3));
+        productSet2.add(shop.getProducts().get(3));
+        productSet2.add(shop.getProducts().get(1));
+
+        cuDao.writeInDB(shop.getCustomers());
+        prDao.writeInDB(shop.getProducts());
+        puDao.writeInDB(shop.getPurchases());
+
+        shop.createPurchase(shop.getCustomers().get(1), productSet1);
+        shop.createPurchase(shop.getCustomers().get(0), productSet2);
+        shop.createPurchase(shop.getCustomers().get(3), productSet1);
+        customers = cuDao.readFromDB();
+        products = prDao.readFromDB();
+        purchases = puDao.readFromDB();
+
+        customers.forEach(System.out::println);
+        products.forEach(System.out::println);
+        purchases.forEach(System.out::println);
+
+        cuDao.printMaleCustomers();
+        cuDao.printCustomersSumMoneyGroupBySex();
 
 
         /*System.out.println(shop.getCustomers().get(0));

@@ -14,7 +14,7 @@ public class Purchase {
     private int id;
     @OneToOne(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
     private Customer customer;
-    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = CascadeType.ALL, fetch= FetchType.EAGER)
     private List<Product> products;
     @Column(name = "price")
     private double finalPrice;
@@ -31,7 +31,7 @@ public class Purchase {
     public Purchase() {
     }
 
-    Purchase(Customer customer, List<Product> products, Sale sale) {
+    public Purchase(Customer customer, List<Product> products, Sale sale) {
         this.customer = customer;
         this.products = products;
 
@@ -77,7 +77,7 @@ public class Purchase {
                 strProducts.append(products.get(i).toString());
             }
         }
-        return "id " + getId() +
+        return "Purchase {id " + getId() +
                 ", price " + getFinalPrice() +
                 "', products =[" + strProducts + "]}";
     }
