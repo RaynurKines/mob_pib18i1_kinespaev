@@ -12,12 +12,13 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "purchase_id")
     private int id;
-    @OneToOne(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
     private Customer customer;
     @ManyToMany(cascade = CascadeType.ALL, fetch= FetchType.EAGER)
     private List<Product> products;
     @Column(name = "price")
-    private double finalPrice;
+    private Double finalPrice;
 
     private static double calcFinalPrice(Customer customer, Product product, Sale sale) {
         double price = product.getPrice();
@@ -60,11 +61,11 @@ public class Purchase {
         this.products = products;
     }
 
-    public double getFinalPrice() {
+    public Double getFinalPrice() {
         return finalPrice;
     }
 
-    public void setFinalPrice(double finalPrice) {
+    public void setFinalPrice(Double finalPrice) {
         this.finalPrice = finalPrice;
     }
 
@@ -78,7 +79,7 @@ public class Purchase {
             }
         }
         return "Purchase {id " + getId() +
-                ", price " + getFinalPrice() +
+                ", price=" + getFinalPrice() +
                 "', products =[" + strProducts + "]}";
     }
 }

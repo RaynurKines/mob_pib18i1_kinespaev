@@ -1,11 +1,13 @@
 package dao;
 
 import db.HibernateUtil;
+import model.Customer;
 import model.Purchase;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseDao {
@@ -57,14 +59,15 @@ public class PurchaseDao {
         return null;
     }
 
-    public void pring() {
+    public void printPurchasesAvgPrice(){
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            List <Purchase> purchases = session.createQuery("FROM Purchase", Purchase.class).list();
+            Double avgPrice = (Double) session.createSQLQuery("select AVG(price) from Purchase").getSingleResult();
+            System.out.println("!!!AVG price = " + avgPrice + "!!!");
         } catch (Exception e) {
             if (transaction != null) {
-                transaction.rollback();
+                //transaction.rollback();
             }
             e.printStackTrace();
         }

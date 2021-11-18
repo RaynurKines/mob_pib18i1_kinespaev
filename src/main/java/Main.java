@@ -44,6 +44,7 @@ public class Main {
         shop.createPurchase(shop.getCustomers().get(1), productSet1);
         shop.createPurchase(shop.getCustomers().get(0), productSet2);
         shop.createPurchase(shop.getCustomers().get(3), productSet1);
+        shop.createPurchase(shop.getCustomers().get(3), productSet2);
         customers = cuDao.readFromDB();
         products = prDao.readFromDB();
         purchases = puDao.readFromDB();
@@ -54,7 +55,7 @@ public class Main {
 
         cuDao.printMaleCustomers();
         cuDao.printCustomersSumMoneyGroupBySex();
-
+        puDao.printPurchasesAvgPrice();
 
         /*System.out.println(shop.getCustomers().get(0));
         System.out.println(shop.getCustomers().get(1));

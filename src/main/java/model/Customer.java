@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customer")
@@ -25,17 +26,8 @@ public class Customer {
     @Column(name = "score")
     public int score = 0;
 
-    @OneToOne(orphanRemoval = true)
-    @JoinColumn(name = "purchase_id")
-    private Purchase purchase;
-
-    public Purchase getPurchase() {
-        return purchase;
-    }
-
-    public void setPurchase(Purchase purchase) {
-        this.purchase = purchase;
-    }
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch= FetchType.EAGER)
+    private List<Purchase> purchases;
 
     public Customer() {
 
@@ -79,15 +71,32 @@ public class Customer {
         return id;
     }
 
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
+    }
+
     @Override
     public String toString() {
+        StringBuilder strPurchases = new StringBuilder();
+        if ((purchases != null) && (purchases.size() > 0)) {
+            for (int i = 0; i < purchases.size(); i++) {
+                if (i > 0)
+                    strPurchases.append(",");
+                strPurchases.append(purchases.get(i).toString());
+            }
+        }
         return "Customer {" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", sex='" + sex + '\'' +
                 ", money=" + money +
                 ", regular=" + regular +
-                ", score=" + score +
-                '}';
+                ", purchases count=" + purchases.size() +
+                ", purchases=[{" + strPurchases +
+                "]}";
     }
 }
