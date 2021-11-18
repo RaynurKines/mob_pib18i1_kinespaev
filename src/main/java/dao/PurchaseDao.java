@@ -61,7 +61,7 @@ public class PurchaseDao {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            List <Purchase> purchases = session.createQuery("FROM Purchase where", Purchase.class).list();
+            List <Purchase> purchases = session.createQuery("FROM Purchase", Purchase.class).list();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
